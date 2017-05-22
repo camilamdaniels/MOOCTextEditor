@@ -76,20 +76,14 @@ public class NearbyWords implements SpellingSuggest {
 	 * @return
 	 */
 	public void insertions(String s, List<String> currentList, boolean wordsOnly ) {
-		// TODO: Implement this method  
-		StringBuilder sb = new StringBuilder(s);
-		String alphabet = "abcdefghijklmnopqrstuvwxyz";
-		char[] alphChars = alphabet.toCharArray();
-		
-		for (int i=0; i<alphChars.length; i++) {
-			char letter = alphChars[i];
-			for (int k=0; k<sb.length(); k++) {
-				String word = sb.insert(k, letter).toString();
-				if (wordsOnly && dict.isWord(word) && !currentList.contains(word)) {
-					currentList.add(word);
-				} 
-				if (!wordsOnly && !currentList.contains(word)) {
-					currentList.add(word);
+		for (int i=0; i<s.length()+1; i++) {
+			for (int charCode = (int)'a'; charCode <=(int)'z'; charCode++) {
+				StringBuffer sb = new StringBuffer(s);
+				sb.insert(i, (char)charCode);
+				
+				if (!currentList.contains(sb.toString()) && (!wordsOnly || dict.isWord(sb.toString())) && 
+						!s.equals(sb.toString())) {
+					currentList.add(sb.toString());
 				}
 			}
 		}
@@ -104,14 +98,13 @@ public class NearbyWords implements SpellingSuggest {
 	 */
 	public void deletions(String s, List<String> currentList, boolean wordsOnly ) {
 		// TODO: Implement this method
-		StringBuilder sb = new StringBuilder(s);
-		for (int i=0; i< sb.length(); i++) {
-			String word = sb.deleteCharAt(i).toString();
-			if (wordsOnly && dict.isWord(word) && !currentList.contains(word)) {
-				currentList.add(word);
-			}
-			if (!wordsOnly && !currentList.contains(word)) {
-				currentList.add(word);
+		for (int i=0; i<s.length(); i++) {
+			StringBuffer sb = new StringBuffer(s);
+			sb.deleteCharAt(i);
+			
+			if (!currentList.contains(sb.toString()) && (!wordsOnly || dict.isWord(sb.toString())) && 
+					!s.equals(sb.toString())) {
+				currentList.add(sb.toString());
 			}
 		}
 	}
@@ -145,14 +138,14 @@ public class NearbyWords implements SpellingSuggest {
 		// while the queue has elements and we need more suggestions
 		while (!queue.isEmpty() && retList.size() < numSuggestions) {
 			// remove the word from the start of the queue and assign to curr
-			String curr = queue.remove(0);
-			// get a list of neighbors (string one mutation away from curr)
+			String curr = queue.get(0);
+			//get a list of neighbors (string one mutation away from curr)
 			List<String> neighbors = new ArrayList<String>();
 			deletions(curr, neighbors, true);
 			insertions(curr, neighbors, true);
 			substitution(curr, neighbors, true);
 			// for each n in the list of neighbors
-			for (int i=0; i< THRESHOLD; i++) {
+			for (int i=0; i<neighbors.size(); i++) {
 				String n = neighbors.get(i);
 				// if n is not visited
 				if (!visited.contains(n)) {
@@ -167,7 +160,7 @@ public class NearbyWords implements SpellingSuggest {
 					}	
 				}
 			}
-			//queue.remove(0);
+			queue.remove(0);
 		}
 		// return retList
 		return retList;
@@ -185,10 +178,12 @@ public class NearbyWords implements SpellingSuggest {
 	   System.out.println("One away word Strings for for \""+word+"\" are:");
 	   System.out.println(l+"\n");
 
+	   
 	   word = "tailo";
 	   List<String> suggest = w.suggestions(word, 10);
 	   System.out.println("Spelling Suggestions for \""+word+"\" are:");
 	   System.out.println(suggest);
+	   
 	   
    }
 
