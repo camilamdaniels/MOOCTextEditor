@@ -1,9 +1,9 @@
 # MOOCTextEditor
-// Hello!
+Hello!
  
- // I added autocomplete and spelling suggestion functionality to this desktop text editor. This was an assignment for a UC San Diego/ Duke University [MOOC](https://www.coursera.org/learn/data-structures-optimizing-performance#syllabus) I completed in 2018. 
+I added autocomplete and spelling suggestion functionality to this desktop text editor. This was an assignment for a UC San Diego/ Duke University [MOOC](https://www.coursera.org/learn/data-structures-optimizing-performance#syllabus) I completed in 2018. 
  
- // Here are a few screenshots of this project.
+Here are a few screenshots of this project.
  
  *The main application page.*
  ![GitHub Logo](/images/homepage.png)
